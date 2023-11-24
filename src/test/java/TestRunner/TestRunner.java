@@ -7,7 +7,8 @@ import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
 
-@CucumberOptions(features="D:\\MyStoreProject\\src\\test\\resources\\Features",glue= {"StepDefinations","applicationHooks"})
+@CucumberOptions(features = "src\\test\\resources\\Features", glue = { "StepDefinations",
+		"applicationHooks" }, plugin = { "pretty" })
 public class TestRunner {
 
 }

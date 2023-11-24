@@ -10,10 +10,10 @@ import org.openqa.selenium.WebDriver;
 public class ConfigReader {
 
 	private Properties prop;
-	public Properties init_Properties() {
+	public Properties init_Properties(String  propertyName) {
 		prop = new Properties();
 		try {
-			FileInputStream fi = new FileInputStream("D:\\MyStoreProject\\src\\test\\resources\\Configuaration\\Config.properties");
+			FileInputStream fi = new FileInputStream(System.getProperty("user.dir")+"\\src\\test\\resources\\Configuaration\\"+propertyName+".properties");
 			prop.load(fi);
 
 		} catch (FileNotFoundException e) {

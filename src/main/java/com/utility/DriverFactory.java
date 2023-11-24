@@ -29,7 +29,6 @@ public class DriverFactory {
 	}
 
 	public static WebDriver getDriver() {
-		// tDriver.set(new ChromeDriver());
 
 		System.out.println(tDriver.get());
 		return tDriver.get();

@@ -23,7 +23,7 @@ public class ApplicationHooks {
 	@Before(order = 0)
 	public void getProperty() {
 		configReader = new ConfigReader();
-		prop = configReader.init_Properties();
+		prop = configReader.init_Properties("Config");
 	}
 
 	@Before(order = 1)
