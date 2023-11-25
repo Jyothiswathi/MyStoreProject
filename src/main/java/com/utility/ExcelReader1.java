@@ -111,7 +111,11 @@ public class ExcelReader1 {
 				Map<String, String> singleRowData = new HashMap();
 				XSSFRow row1 = sheet.getRow(i);
 				for (int j = 0; j < columnCount; j++) {
-					cell = row1.getCell(j);
+					try {
+						cell = row1.getCell(j);
+					} catch (Exception e) {
+					}
+
 					singleRowData.put(columnHeaders.get(j), getCellValueAsString(cell));
 				}
 				a.add(singleRowData);
@@ -125,6 +129,7 @@ public class ExcelReader1 {
 
 	public String getCellValueAsString(Cell cell) {
 		String cellValue = null;
+
 		try {
 			switch (cell.getCellType()) {
 			case NUMERIC:
@@ -146,7 +151,7 @@ public class ExcelReader1 {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		return cellValue;
 	}
@@ -292,4 +297,55 @@ public class ExcelReader1 {
 
 	}
 
+	public void writeDataBasedOnPosition(String sheetName, String HeaderColumnName, int Rownum, String Data)
+			throws IOException {
+		try {
+			int columnNum = 0;
+			sheet = getsheetName(sheetName);
+			List<String> headers = headers(sheetName);
+			Map<String, Integer> headerValues = new HashMap<String, Integer>();
+			for (int i = 0; i < headers.size(); i++) {
+				headerValues.put(headers.get(i), i);
+				if (headerValues.containsKey(HeaderColumnName)) {
+					columnNum = headerValues.get(HeaderColumnName);
+				}
+			}
+			sheet.getRow(Rownum).createCell(columnNum).setCellValue(Data);
+			fos = new FileOutputStream(path);
+			workbook.write(fos);
+			workbook.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public List<String> getEnterColumnBasedOnHeaders(String sheetName, String headerValue) throws IOException {
+		List<String> columnValues = null;
+		try {
+			sheet = getsheetName(sheetName);
+			int columnIndex = 0;
+			List<String> totalHeaders = headers(sheetName);
+			columnValues = new ArrayList<String>();
+			HashMap<String, Integer> m = new HashMap<String, Integer>();
+			int totalRows = sheet.getLastRowNum();
+			for (int i = 0; i < totalHeaders.size(); i++) {
+				if (totalHeaders.get(i).equals(headerValue)) {
+					m.put(totalHeaders.get(i), i);
+					columnIndex = m.get(totalHeaders.get(i));
+				}
+			}
+			for (int i = 1; i <= totalRows; i++) {
+				cell = sheet.getRow(i).getCell(columnIndex);
+				String eachValue = getCellValueAsString(cell);
+				columnValues.add(eachValue);
+			}
+			System.out.println(columnValues);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return columnValues;
+	}
 }

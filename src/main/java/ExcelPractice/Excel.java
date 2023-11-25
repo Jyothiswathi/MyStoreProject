@@ -15,7 +15,7 @@ import com.utility.ExcelReader1;
 
 public class Excel {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, InterruptedException {
 
 		String filepath = ".\\ExcelData\\a.xlsx";
 
@@ -29,18 +29,28 @@ public class Excel {
 
 			for (int j = 0; j < totalColumns; j++) {
 				XSSFCell cell = eachRow.getCell(j);
-				switch (cell.getCellType()) {
-				case STRING:
-					cell.getStringCellValue();
-					break;
-				case NUMERIC:
-					cell.getNumericCellValue();
-					break;
-				case BOOLEAN:
-					cell.getBooleanCellValue();
-					break;
+				if(eachRow.getCell(j)!=null)
+				try {
+					switch (cell.getCellType()) {
+					case STRING:
+						cell.getStringCellValue();
+						break;
+					case NUMERIC:
+						cell.getNumericCellValue();
+						break;
+					case BOOLEAN:
+						cell.getBooleanCellValue();
+						break;
+					case _NONE:
+						cell.setBlank();
+					default:
+
+					}
+				} catch (Exception e) {
+					//e.printStackTrace();
 				}
 				//System.out.print("|");
+				
 
 			}
 //			System.out.println();
@@ -57,6 +67,14 @@ public class Excel {
 	List<String> a = ExcelReader1.headers("data");
 	System.out.println(a);
 	ExcelReader1.getSheetCount();
+	//ExcelReader1.setCellData("data",1,2,"PASS");
+	ExcelReader1.writeDataBasedOnPosition("data"," Validation Status",2,"PASS");
+	ExcelReader1.writeDataBasedOnPosition("data","status",2,"PASS");
+	ExcelReader1.getEnterColumnBasedOnHeaders("data","status");
+
+	
+	
+	
 	
 
 
